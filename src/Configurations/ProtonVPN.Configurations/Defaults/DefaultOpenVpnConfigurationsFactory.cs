@@ -36,7 +36,7 @@ public static class DefaultOpenVpnConfigurationsFactory
             TapInstallerDir = Path.Combine(resourcesFolderPath, "tap"),
 
             TunAdapterId = "wintun",
-            TunAdapterName = "ProtonVPN TUN",
+            TunAdapterName = "LyraVPN TUN",
 
             TlsExportCertFolder = Path.Combine(commonAppDataProtonVpnPath, "ExportCert"),
             ExePath = Path.Combine(resourcesFolderPath, "openvpn.exe"),

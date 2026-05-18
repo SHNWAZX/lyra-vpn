@@ -56,7 +56,7 @@ public static class DefaultConfiguration
     private static readonly Lazy<string> _localAppDataPath = new(() => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
 
     /// <returns>C:\Users\{user}\AppData\Local\Proton\Proton VPN</returns>
-    private static readonly Lazy<string> _localAppDataProtonVpnPath = new(() => Path.Combine(_localAppDataPath.Value, "Proton", "Proton VPN"));
+    private static readonly Lazy<string> _localAppDataProtonVpnPath = new(() => Path.Combine(_localAppDataPath.Value, "Lyra", "Lyra VPN"));
 
     /// <returns>C:\Users\{user}\AppData\Local\Proton\Proton VPN\Storage</returns>
     private static readonly Lazy<string> _storageFolder = new(() => Path.Combine(_localAppDataProtonVpnPath.Value, "Storage"));
@@ -70,31 +70,31 @@ public static class DefaultConfiguration
     // Properties
     public static string ClientVersion => AssemblyVersion.Get();
     public static string ApiClientId => "windows-vpn";
-    public static string UserAgent => "ProtonVPN";
+    public static string UserAgent => "LyraVPN";
     public static string ApiVersion => "3";
-    public static string ClientName => "ProtonVPN.Client";
-    public static string ServiceName => "ProtonVPN Service";
-    public static string CalloutServiceName => "ProtonVPNCallout";
+    public static string ClientName => "LyraVPN";
+    public static string ServiceName => "LyraVPN Service";
+    public static string CalloutServiceName => "LyraVPNCallout";
     public static string BaseFilteringEngineServiceName => "BFE";
 
     /// <returns>C:\Users\{user}\AppData\Local\Proton\Proton VPN</returns>
     public static string LocalAppDataProtonVpnPath => _localAppDataProtonVpnPath.Value;
 
     /// <returns>C:\Program Files\Proton\VPN\ProtonVPN.Launcher.exe</returns>
-    public static string ClientLauncherExePath => Path.Combine(_baseDirectory.Value, "ProtonVPN.Launcher.exe");
+    public static string ClientLauncherExePath => Path.Combine(_baseDirectory.Value, "LyraVPN.Launcher.exe");
 
     /// <returns>C:\Program Files\Proton\VPN\v4.0.0\Resources\ProtonVPN.InstallActions.dll</returns>
     public static string InstallActionsPath => Path.Combine(_baseVersionDirectory.Value, "ProtonVPN.InstallActions.dll");
 
     /// <returns>C:\Program Files\Proton\VPN\v4.0.0\ProtonVPN.Client.exe</returns>
-    public static string ClientExePath => Path.Combine(_baseVersionDirectory.Value, "ProtonVPN.Client.exe");
+    public static string ClientExePath => Path.Combine(_baseVersionDirectory.Value, "LyraVPN.exe");
 
     /// <returns>C:\Program Files\Proton\VPN\v4.0.0\ProtonVPNService.exe</returns>
-    public static string ServiceExePath => Path.Combine(_baseVersionDirectory.Value, "ProtonVPNService.exe");
+    public static string ServiceExePath => Path.Combine(_baseVersionDirectory.Value, "LyraVPNService.exe");
 
-    public static string ProtocolActivationScheme = "proton-vpn";
+    public static string ProtocolActivationScheme = "lyra-vpn";
 
-    public static string LegacyProtocolActivationScheme = "protonvpn";
+    public static string LegacyProtocolActivationScheme = "lyravpn";
 
     /// <returns>C:\Users\{user}\AppData\Local\Proton\Proton VPN\Storage</returns>
     public static string StorageFolder => _storageFolder.Value;
@@ -153,7 +153,7 @@ public static class DefaultConfiguration
     // C:\Program Files\Proton\VPN\v4.0.0\wintun.dll
     public static string WintunDriverPath => Path.Combine(_baseVersionDirectory.Value, "wintun.dll");
 
-    public static string WintunAdapterName => "ProtonVPN TUN";
+    public static string WintunAdapterName => "LyraVPN TUN";
 
     public static string ServerValidationPublicKey => "MCowBQYDK2VwAyEANpYpt/FlSRwEuGLMoNAGOjy1BTyEJPJvKe00oln7LZk=";
     public static string VpnUsernameSuffix => "+pw"; // p - proton, w - windows

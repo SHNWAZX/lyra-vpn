@@ -1,11 +1,11 @@
-# Building Proton VPN Windows app
+# Building Lyra VPN Windows app
 
-**Building guide of the Proton VPN Windows app.** 
-Proton VPN Windows app is .NET 6 application created using C# and C++ programming languages.
+**Building guide of the Lyra VPN Windows app.**
+Lyra VPN Windows app is a .NET 8 application created using C# and C++ programming languages.
 
 ## Prerequisites
 
-To build Proton VPN the following tools have to be installed:
+To build Lyra VPN the following tools have to be installed:
 
 - [Visual Studio Community 2022](https://visualstudio.microsoft.com/downloads/)   (see details [here](#visual-studio))
 - [Windows Software Development Kit (SDK)](https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/)

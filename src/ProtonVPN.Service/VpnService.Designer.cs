@@ -51,7 +51,7 @@ namespace ProtonVPN.Service
             this.CanHandlePowerEvent = true;
             this.CanHandleSessionChangeEvent = true;
             this.CanShutdown = true;
-            this.ServiceName = "ProtonVPNService";
+            this.ServiceName = "LyraVPNService";
         }
 
         #endregion

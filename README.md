@@ -1,18 +1,20 @@
-# Proton VPN Windows app
+# Lyra VPN Windows app
 
-Copyright (c) 2023 Proton AG
+Lyra VPN is a GPL-3.0-or-later fork of the Proton VPN Windows app.
 
-This repository holds the Proton VPN Windows app.
+This repository holds the Lyra VPN Windows app source code. It keeps the original GPL license and copyright notices while changing visible app branding to Lyra VPN.
+
+See [FORK_NOTICE.md](FORK_NOTICE.md) for affiliation, trademark, and entitlement notes.
+
 For a detailed build information see [BUILD](BUILD.md).
-For licensing information see [COPYING](COPYING.md).
+For licensing information see [LICENSE](LICENSE).
 For contribution policy see [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Description
 
-The [Proton VPN](https://protonvpn.com) Windows app is intended for every Proton VPN service user,
-paid or free and supports all functionalities available to authenticated users (user signup instead happens on the web site).
+Lyra VPN is a branded fork of the Proton VPN Windows client. It can only use VPN services and servers that the signed-in account or configured backend is authorized to use.
 
-You can download the latest stable release, either on [Proton VPN official website](https://protonvpn.com/download) or directly on the [official GitHub repository](https://github.com/ProtonVPN/win-app/releases/latest).
+Premium upgrade prompts have been removed from this fork, but service-side access controls are intentionally left intact.
 
 ### The application
 

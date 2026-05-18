@@ -33,7 +33,7 @@ namespace ProtonVPN.Client;
 
 public partial class App : Application
 {
-    public const string APPLICATION_NAME = "Proton VPN";
+    public const string APPLICATION_NAME = "Lyra VPN";
 
     private const string WINDOWS_11_TYPOGRAPHY_RD_PATH = "ms-appx:///ProtonVPN.Client.Common.UI/Styles/Typography.xaml";
     private const string WINDOWS_10_TYPOGRAPHY_RD_PATH = "ms-appx:///ProtonVPN.Client.Common.UI/Styles/Typography_W10.xaml";

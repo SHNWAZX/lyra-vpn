@@ -1,5 +1,5 @@
 ﻿[CustomMessages]
-InstallerTitle=Proton VPN está listo para ser instalado
+InstallerTitle=Lyra VPN está listo para ser instalado
 InstallOtherApps=Selecciona otras aplicaciones Proton para instalar. Estos servicios están incluidos en tu plan.
 FreeTrial=Prueba gratuita
 Free=Gratis

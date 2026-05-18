@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -151,7 +151,7 @@
     <value>Delete</value>
   </data>
   <data name="Common_Actions_Upgrade" xml:space="preserve">
-    <value>Upgrade</value>
+    <value>Unavailable</value>
   </data>
   <data name="Common_Actions_Change" xml:space="preserve">
     <value>Change</value>
@@ -1542,10 +1542,10 @@
   <data name="Home_ConnectionDetails_ConnectToRestoreConnection" xml:space="preserve">
     <value>Connect to VPN to restore your internet connection.</value>
   </data>
-    <data name="Home_ConnectionDetails_TwoFactorRequired_Title" xml:space="preserve">
+  <data name="Home_ConnectionDetails_TwoFactorRequired_Title" xml:space="preserve">
     <value>2FA expired</value>
   </data>
-    <data name="Home_ConnectionDetails_TwoFactorRequired_Description" xml:space="preserve">
+  <data name="Home_ConnectionDetails_TwoFactorRequired_Description" xml:space="preserve">
     <value>Re-authenticate in your organization's 2FA portal to continue.</value>
   </data>
   <data name="Home_NetShield_AdsBlocked_One" xml:space="preserve">
@@ -1579,7 +1579,7 @@
     <value>Server is under maintenance</value>
   </data>
   <data name="Home_Recents_Restricted" xml:space="preserve">
-    <value>Server is available with VPN Plus</value>
+    <value>Server is not available on your current account</value>
   </data>
   <data name="Home_Recents_Title" xml:space="preserve">
     <value>Recents</value>
@@ -1662,7 +1662,7 @@
   <data name="Settings_Connection_Advanced_CustomDnsServers_Footer" xml:space="preserve">
     <value>We'll try to connect to these servers in order. If none of them work, the default Proton VPN DNS will be used.</value>
   </data>
-	<data name="Settings_Connection_Advanced_CustomDnsServers_Header" xml:space="preserve">
+  <data name="Settings_Connection_Advanced_CustomDnsServers_Header" xml:space="preserve">
     <value>DNS servers</value>
   </data>
   <data name="Settings_Connection_Advanced_CustomDnsServers_FormattedHeader" xml:space="preserve">
@@ -2906,13 +2906,13 @@
     <value>P2P not available with VPN Free</value>
   </data>
   <data name="SystemNotification_P2PWarning_Description" xml:space="preserve">
-    <value>Unlock torrenting and online gaming over P2P (peer-to-peer) protocols with paid VPN servers.</value>
+    <value>P2P traffic may be unavailable on your current account. End your P2P activity to restore your connection.</value>
   </data>
   <data name="SystemNotification_StreamingWarning_Title" xml:space="preserve">
     <value>Blocked website?</value>
   </data>
   <data name="SystemNotification_StreamingWarning_Description" xml:space="preserve">
-    <value>Some websites and streaming services block free VPN users. Upgrade to Proton VPN Plus to bypass these blocks.</value>
+    <value>Some websites and streaming services may be unavailable on your current account.</value>
   </data>
   <data name="UpsellBanner_WrongCountry_Description" xml:space="preserve">
     <value>Upgrade to choose any server.</value>
@@ -3110,7 +3110,7 @@
     <value>Maybe later</value>
   </data>
   <data name="Dialogs_Common_UpgradeToGetPlusFeatures" xml:space="preserve">
-    <value>Upgrade to get access to Plus servers and features again.</value>
+    <value>Some features are not available on your current account.</value>
   </data>
   <data name="Dialogs_Common_SubscriptionExpired" xml:space="preserve">
     <value>Subscription expired</value>
@@ -3282,7 +3282,7 @@
     <comment>{0} is a placeholder for the number of profiles (eg. Profiles (5)). This string is used when the number is different than 1.</comment>
   </data>
   <data name="Connections_Profiles_NotAvailable_Tooltip" xml:space="preserve">
-    <value>Profiles are available with VPN Plus</value>
+    <value>Profiles are not available on your current account</value>
     <comment>The text in the tooltip when hovering a profile and the user has a free plan</comment>
   </data>
   <data name="Connections_Profiles_Location_Header" xml:space="preserve">
@@ -3445,33 +3445,33 @@
     <value>All servers in this country are under maintenance</value>
   </data>
   <data name="Connections_Country_Restricted" xml:space="preserve">
-    <value>Servers in this country are available with VPN Plus</value>
+    <value>Servers in this country are not available on your current account</value>
   </data>
   <data name="Connections_State_UnderMaintenance" xml:space="preserve">
     <value>All servers in this state are under maintenance.</value>
     <comment>Message appears as a tooltip whenever all the servers from that state are under maintenance. In this context, States refers to Country states (eg. Arizona, California... for USA)</comment>
   </data>
   <data name="Connections_State_Restricted" xml:space="preserve">
-    <value>Servers in this state are available with VPN Plus.</value>
+    <value>Servers in this state are not available on your current account.</value>
     <comment>Message appears as a tooltip whenever a free user is trying to connect to a state. In this context, States refers to Country states (eg. Arizona, California... for USA)</comment>
   </data>
   <data name="Connections_City_UnderMaintenance" xml:space="preserve">
     <value>All servers in this city are under maintenance</value>
   </data>
   <data name="Connections_City_Restricted" xml:space="preserve">
-    <value>Servers in this city are available with VPN Plus</value>
+    <value>Servers in this city are not available on your current account</value>
   </data>
   <data name="Connections_Server_UnderMaintenance" xml:space="preserve">
     <value>This server is under maintenance</value>
   </data>
   <data name="Connections_Server_Restricted" xml:space="preserve">
-    <value>Server available with VPN Plus</value>
+    <value>Server is not available on your current account</value>
   </data>
   <data name="Connections_Gateway_UnderMaintenance" xml:space="preserve">
     <value>All servers in this gateway are under maintenance</value>
   </data>
   <data name="Connections_Gateway_Restricted" xml:space="preserve">
-    <value>Servers in this gateway are available with VPN Plus</value>
+    <value>Servers in this gateway are not available on your current account</value>
   </data>
   <data name="Settings_Theme_Dark" xml:space="preserve">
     <value>Dark</value>
@@ -3754,7 +3754,7 @@
     <value>Enjoy ad-free browsing</value>
   </data>
   <data name="Flyouts_NetShield_Upsell_Description" xml:space="preserve">
-    <value>Block ads, trackers, malware, and adult content with VPN Plus.</value>
+    <value>This feature is not available on your current account.</value>
   </data>
   <data name="Flyouts_PortForwarding_Info" xml:space="preserve">
     <value>Improves peer-to-peer download speeds</value>
@@ -3775,7 +3775,7 @@
     <value>Improve P2P speed</value>
   </data>
   <data name="Flyouts_PortForwarding_Upsell_Description" xml:space="preserve">
-    <value>Supercharge peer-to-peer (P2P) file sharing performance with VPN Plus.</value>
+    <value>This feature is not available on your current account.</value>
   </data>
   <data name="Flyouts_SplitTunneling_Info" xml:space="preserve">
     <value>Allows trusted apps and IP addresses to connect without VPN protection</value>
@@ -3790,7 +3790,7 @@
     <value>Get the best of both worlds</value>
   </data>
   <data name="Flyouts_SplitTunneling_Upsell_Description" xml:space="preserve">
-    <value>Divide your traffic into VPN and non-VPN tunnels with VPN Plus.</value>
+    <value>This feature is not available on your current account.</value>
   </data>
   <data name="Flyouts_SplitTunneling_Protected_Apps_One" xml:space="preserve">
     <value>Protected app ({0})</value>

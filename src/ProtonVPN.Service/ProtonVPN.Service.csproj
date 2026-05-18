@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <AssemblyName>ProtonVPNService</AssemblyName>
+        <AssemblyName>LyraVPNService</AssemblyName>
     </PropertyGroup>
     <PropertyGroup>
-        <ApplicationIcon>protonvpn.ico</ApplicationIcon>
+        <ApplicationIcon>lyravpn.ico</ApplicationIcon>
     </PropertyGroup>
     <PropertyGroup>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -33,7 +33,7 @@
         </Compile>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="protonvpn.ico" />
+        <Content Include="lyravpn.ico" />
         <Content Include="Resources\config.ovpn">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>

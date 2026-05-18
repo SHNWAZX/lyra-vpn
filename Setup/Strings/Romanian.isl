@@ -1,5 +1,5 @@
 ﻿[CustomMessages]
-InstallerTitle=Proton VPN este gata de instalare
+InstallerTitle=Lyra VPN este gata de instalare
 InstallOtherApps=Selectați alte aplicații Proton pentru a le instala. Aceste servicii sunt incluse în planul actual.
 FreeTrial=Încercare gratuită
 Free=Free

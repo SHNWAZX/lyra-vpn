@@ -99,7 +99,7 @@ internal class Bootstrapper
         ServiceBase.Run(vpnService);
         vpnService.CancellationToken.WaitHandle.WaitOne();
 
-        Resolve<ILogger>().Info<AppServiceStopLog>("=== Proton VPN Service has exited ===");
+        Resolve<ILogger>().Info<AppServiceStopLog>("=== Lyra VPN Service has exited ===");
     }
 
     private void RegisterEvents()

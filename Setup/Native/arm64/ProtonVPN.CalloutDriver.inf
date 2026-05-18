@@ -55,6 +55,6 @@ Dependencies   = TCPIP                               ; Load after TCPIP.sys
 [Strings]
 ManufacturerName   = "Proton AG"
 DiskName           = "ProtonVPN Callout Driver Installation Disk"
-ServiceName        = "ProtonVPNCallout"
+ServiceName        = "LyraVPNCallout"
 ServiceDisplayName = "ProtonVPN Callout"
 ServiceDescription = "ProtonVPN Callout Driver"

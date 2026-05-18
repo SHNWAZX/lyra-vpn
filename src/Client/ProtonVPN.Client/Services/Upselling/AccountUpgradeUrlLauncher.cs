@@ -49,40 +49,20 @@ public class AccountUpgradeUrlLauncher : IAccountUpgradeUrlLauncher,
         _webAuthenticator = webAuthenticator;
     }
 
-    public async Task OpenAsync(ModalSource modalSource, string? reference = null)
+    public Task OpenAsync(ModalSource modalSource, string? reference = null)
     {
-        string url = await _webAuthenticator.GetUpgradeAccountUrlAsync(modalSource, reference);
-
-        Open(url, modalSource, reference);
+        return Task.CompletedTask;
     }
 
     public void Open(string url, ModalSource modalSource, string? reference = null)
     {
-        try
-        {
-            _upsellUpgradeAttemptReporter.Report(modalSource, reference);
-
-            _urlsBrowser.BrowseTo(url);
-        }
-        finally
-        {
-            SetAttempt(url, modalSource, reference);
-        }
     }
 
     public void Receive(VpnPlanChangedMessage message)
     {
         try
         {
-            if (_currentAttemptModalSource.HasValue && message.HasChanged() && !message.IsDowngrade())
-            {
-                _upsellSuccessReporter.Report(
-                    _currentAttemptUrl ?? string.Empty, 
-                    _currentAttemptModalSource.Value, 
-                    message.OldPlan, 
-                    message.NewPlan, 
-                    _currentAttemptReference);
-            }
+            // Lyra VPN keeps entitlement checks intact but does not open premium upgrade flows.
         }
         finally
         {

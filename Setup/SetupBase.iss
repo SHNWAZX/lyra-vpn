@@ -1,20 +1,20 @@
 #define MyAppVersion "4.0.0"
-#define MyAppName "Proton VPN" 
-#define ClientName "ProtonVPN.Client"
-#define MyAppExeName "ProtonVPN.Client.exe"
+#define MyAppName "Lyra VPN"
+#define ClientName "LyraVPN"
+#define MyAppExeName "LyraVPN.exe"
 #define LegacyMyAppExeName "ProtonVPN.exe"
-#define LauncherExeName "ProtonVPN.Launcher.exe"
-#define AppUserModelID "Proton.VPN"
+#define LauncherExeName "LyraVPN.Launcher.exe"
+#define AppUserModelID "Lyra.VPN"
 
-#define MyPublisher "Proton AG"
+#define MyPublisher "Lyra VPN"
 
-#define ServiceName "ProtonVPN Service"
-#define ServiceExe "ProtonVPNService.exe"
+#define ServiceName "LyraVPN Service"
+#define ServiceExe "LyraVPNService.exe"
 
 #define WireGuardServiceName "ProtonVPN WireGuard"
 #define WireGuardServiceExe "ProtonVPN.WireGuardService.exe"
 
-#define NetworkDriverName "ProtonVPNCallout"
+#define NetworkDriverName "LyraVPNCallout"
 #define NetworkDriverFileName "Resources\ProtonVPN.CalloutDriver.sys"
 
 #define RestoreInternetExeName "ProtonVPN.RestoreInternet.exe"
@@ -34,7 +34,7 @@
 #define DisableAutoUpdateClientArg "-DisableAutoUpdate"
 #define OpenOnDesktopInstallerArg "/OPENONDESKTOP"
 #define OpenOnDesktopClientArg "-OpenOnDesktop"
-#define AppFolder "Proton\VPN"
+#define AppFolder "Lyra\VPN"
 #define RegistryRunPath "Software\Microsoft\Windows\CurrentVersion\Run"
 #define LegacyClientName "ProtonVPN"
 
@@ -42,20 +42,20 @@
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 DefaultDirName={autopf}\{#AppFolder}
-DefaultGroupName=Proton
+DefaultGroupName=Lyra
 DisableDirPage=yes
 AlwaysShowDirOnReadyPage=yes
 DisableProgramGroupPage=auto
 AppPublisher={#MyPublisher}
 UninstallDisplayIcon={app}\{#LauncherExeName}
 UninstallDisplayName={#MyAppName}
-OutputBaseFilename=ProtonVPN_{#VersionFolder}_{#Architecture}{#OutputBaseSuffix}
+OutputBaseFilename=LyraVPN_{#VersionFolder}_{#Architecture}{#OutputBaseSuffix}
 ArchitecturesInstallIn64BitMode=x64compatible
 WizardStyle=modern
 Compression=lzma2
 SolidCompression=yes
 OutputDir=Installers
-SetupIconFile=Images\protonvpn.ico
+SetupIconFile=Images\lyravpn.ico
 SetupLogging=yes
 DisableFinishedPage=yes
 DisableStartupPrompt=yes
@@ -71,23 +71,23 @@ SignTool=signtool sign /a /tr http://timestamp.sectigo.com /td SHA256 /fd SHA256
 SetupWindowTitle={#MyAppName}
 
 [Registry]
-Root: HKLM; Subkey: "Software\Proton AG\Proton VPN"; Flags: uninsdeletekey dontcreatekey;
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Services\EventLog\Application\ProtonVPNService"; Flags: uninsdeletekey dontcreatekey;
+Root: HKLM; Subkey: "Software\Lyra VPN\Lyra VPN"; Flags: uninsdeletekey dontcreatekey;
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Services\EventLog\Application\LyraVPNService"; Flags: uninsdeletekey dontcreatekey;
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Services\EventLog\Application\ProtonVPN"; Flags: uninsdeletekey;
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Services\EventLog\Application\ProtonVPN"; ValueType: expandsz; ValueName: "EventMessageFile"; ValueData: "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\EventLogMessages.dll"; Flags: deletekey uninsdeletekey;
 
 [Files]
 Source: "Images\Proton*.bmp"; Flags: dontcopy nocompression;
 
-Source: "..\{#SourcePath}\ProtonVPN.Launcher.exe"; DestDir: "{app}"; Flags: signonce;
+Source: "..\{#SourcePath}\LyraVPN.Launcher.exe"; DestDir: "{app}"; Flags: signonce;
 
-Source: "..\{#SourcePath}\ProtonVPNService.exe"; DestDir: "{app}\{#VersionFolder}"; Flags: signonce;
-Source: "..\{#SourcePath}\ProtonVPNService.dll"; DestDir: "{app}\{#VersionFolder}"; Flags: signonce;
-Source: "..\{#SourcePath}\ProtonVPNService.deps.json"; DestDir: "{app}\{#VersionFolder}";
-Source: "..\{#SourcePath}\ProtonVPNService.runtimeconfig.json"; DestDir: "{app}\{#VersionFolder}"; AfterInstall: InstallService;
+Source: "..\{#SourcePath}\LyraVPNService.exe"; DestDir: "{app}\{#VersionFolder}"; Flags: signonce;
+Source: "..\{#SourcePath}\LyraVPNService.dll"; DestDir: "{app}\{#VersionFolder}"; Flags: signonce;
+Source: "..\{#SourcePath}\LyraVPNService.deps.json"; DestDir: "{app}\{#VersionFolder}";
+Source: "..\{#SourcePath}\LyraVPNService.runtimeconfig.json"; DestDir: "{app}\{#VersionFolder}"; AfterInstall: InstallService;
 
 Source: "..\{#SourcePath}\*.dll"; DestDir: "{app}\{#VersionFolder}"; Flags: signonce;
-Source: "..\{#SourcePath}\*.exe"; Excludes: "ProtonVPN.Launcher.exe,ProtonVPNService.exe,createdump.exe,RestartAgent.exe"; DestDir: "{app}\{#VersionFolder}"; Flags: signonce;
+Source: "..\{#SourcePath}\*.exe"; Excludes: "LyraVPN.Launcher.exe,LyraVPNService.exe,createdump.exe,RestartAgent.exe"; DestDir: "{app}\{#VersionFolder}"; Flags: signonce;
 Source: "..\{#SourcePath}\*.pri"; DestDir: "{app}\{#VersionFolder}";
 Source: "..\{#SourcePath}\*.deps.json"; DestDir: "{app}\{#VersionFolder}";
 Source: "..\{#SourcePath}\Resources\ProtonVPN.InstallActions.dll"; DestDir: "{app}\{#VersionFolder}"; Flags: signonce;
@@ -159,8 +159,8 @@ Source: "..\data\ipv6_chaos_prefixtree.bin"; DestDir: "{app}\{#VersionFolder}\Se
 Source: "..\{#SourcePath}\proton_vpn_ipv6chaos.dll"; DestDir: "{app}\{#VersionFolder}";
 
 [Icons]
-Name: "{group}\Proton VPN"; Filename: "{app}\{#LauncherExeName}"
-Name: "{commondesktop}\Proton VPN"; Filename: "{app}\{#LauncherExeName}"; Tasks: desktopicon; AppUserModelID: "{#AppUserModelID}";
+Name: "{group}\Lyra VPN"; Filename: "{app}\{#LauncherExeName}"
+Name: "{commondesktop}\Lyra VPN"; Filename: "{app}\{#LauncherExeName}"; Tasks: desktopicon; AppUserModelID: "{#AppUserModelID}";
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopShortcuts}"; 
@@ -533,7 +533,7 @@ var
   IsRunningProcessFound: Boolean;
 begin
   Log('Using directory ' + Directory + ' to find previous app versions for deletion');
-  Processes := ['ProtonVPN.exe', 'ProtonVPN.Client.exe', 'ProtonVPNService.exe', 'ProtonVPN.WireGuardService.exe'];
+  Processes := ['LyraVPN.exe', 'LyraVPNService.exe', 'ProtonVPN.WireGuardService.exe'];
   if FindFirst(ExpandConstant(Directory + '\v*'), VersionFolder) then
   try
     repeat
@@ -719,10 +719,10 @@ begin
     Log('Trying to update taskbar icon path if exists');
     UpdateTaskbarIconTarget(ExpandConstant('{app}\{#VersionFolder}\{#MyAppExeName}'));
 
-    Log('Trying to uninstall an old version of ProtonVPN app');
+    Log('Trying to uninstall an old version of LyraVPN app');
     UninstallProduct('{2B10124D-2F81-4BB1-9165-4F9B1B1BA0F9}');
 
-    Log('Trying to uninstall an old version of ProtonVPN TUN adapter');
+    Log('Trying to uninstall an old version of LyraVPN TUN adapter');
     UninstallProduct('{FED0679F-A292-4507-AEF5-DD2BB8898A36}');
 
     Log('Trying to uninstall an old version of ProtonVPN TAP adapter');
@@ -845,7 +845,7 @@ var res, errorCode: Integer;
 begin
   Log('CurUninstallStepChanged(' + IntToStr(Ord(CurUninstallStep)) + ') called');
   if CurUninstallStep = usUninstall then begin
-    RemovePinnedIcons(ExpandConstant('{commondesktop}\Proton VPN.lnk'));
+    RemovePinnedIcons(ExpandConstant('{commondesktop}\Lyra VPN.lnk'));
 
     Log('Killing {#MyAppExeName} process');
     ShellExec('open', 'taskkill.exe', '/f /im {#MyAppExeName}', '', SW_HIDE, ewWaitUntilTerminated, errorCode);

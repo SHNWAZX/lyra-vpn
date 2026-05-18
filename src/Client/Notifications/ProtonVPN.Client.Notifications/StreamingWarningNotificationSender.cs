@@ -51,7 +51,6 @@ public class StreamingWarningNotificationSender : NotificationSenderBase, IStrea
         ToastContentBuilder tcb = new();
         tcb.AddText(_localizer.Get("SystemNotification_StreamingWarning_Title"));
         tcb.AddText(_localizer.Get("SystemNotification_StreamingWarning_Description"));
-        tcb.AddButton(_localizer.Get("Common_Actions_Upgrade"), ToastActivationType.Foreground, NotificationArguments.UPGRADE);
         Send(tcb);
     }
 

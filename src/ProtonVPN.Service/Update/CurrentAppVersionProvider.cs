@@ -24,7 +24,7 @@ namespace ProtonVPN.Service.Update;
 
 public class CurrentAppVersionProvider : ICurrentAppVersionProvider
 {
-    private const string PATH = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Proton VPN_is1";
+    private const string PATH = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Lyra VPN_is1";
 
     public Version GetVersion()
     {

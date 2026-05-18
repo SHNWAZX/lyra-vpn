@@ -61,9 +61,6 @@ public class SubscriptionExpiredNotificationSender : NotificationSenderBase, ISu
             tcb.AddText(_localizer.Get("Notifications_SubscriptionExpired_Description_Connected"));
         }
 
-        tcb.AddText(_localizer.Get("Dialogs_Common_UpgradeToGetPlusFeatures"));
-        tcb.AddButton(_localizer.Get("Common_Actions_Upgrade"), ToastActivationType.Foreground, NotificationArguments.UPGRADE);
-
         Send(tcb);
     }
 

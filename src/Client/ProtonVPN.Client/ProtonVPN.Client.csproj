@@ -5,7 +5,8 @@
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <RootNamespace>ProtonVPN.Client</RootNamespace>
-    <ApplicationIcon>Assets/ProtonVPN.ico</ApplicationIcon>
+    <AssemblyName>LyraVPN</AssemblyName>
+    <ApplicationIcon>Assets/LyraVPN.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x64</Platforms>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
@@ -31,7 +32,7 @@
     <Page Remove="UI\Main\Home\Details\Contracts\**" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Assets\ProtonVPN.ico" />
+    <None Remove="Assets\LyraVPN.ico" />
     <None Remove="UI\Dialogs\DebugTools\DebugToolsShellView.xaml" />
     <None Remove="UI\Dialogs\DebugTools\DebugToolsWindow.xaml" />
     <None Remove="UI\Dialogs\ReportIssue\Pages\ReportIssueCategoriesPageView.xaml" />
@@ -239,7 +240,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Assets\ProtonVPN.ico">
+    <Content Update="Assets\LyraVPN.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
