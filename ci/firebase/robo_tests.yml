@@ -1,0 +1,11 @@
+include:
+  - component: gitlab.protontech.ch/devex/android-firebase-testing/firebase-robo-test@0.0.3
+    inputs:
+      vault-path-service-account: "vpn_team/gitlab-projects/variables/509/firebase_service_account@kv-team"
+      cloud-project-id: $CLOUD_PROJECT_ID
+      job-name: robo tests
+      app-apk-path: "app/build/outputs/apk/productionGoogleDev/release"
+      device-config: "mobileTest"
+      timeout: 45m
+      robo-script: "gs://protonvpn-testing-scripts/ProtonVPN_Login_Robo_Script.json"
+      robo-directives: "ignore:R.string.settings_sign_out=,ignore:R.string.settings_third_party_licenses="

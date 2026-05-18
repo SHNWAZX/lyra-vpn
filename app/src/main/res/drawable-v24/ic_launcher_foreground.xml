@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) 2022 Proton AG
+
+ This file is part of LyraVPN.
+
+ LyraVPN is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ LyraVPN is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with LyraVPN.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#14B8A6"
+        android:pathData="M54,12L82,22C84.5,22.9 86,25.2 86,27.8V49C86,68.4 73.1,84.7 54,94C34.9,84.7 22,68.4 22,49V27.8C22,25.2 23.5,22.9 26,22L54,12Z" />
+    <path
+        android:fillColor="#0F172A"
+        android:pathData="M54,20L77,28.2V49.6C77,64.4 68.2,77.2 54,85.5C39.8,77.2 31,64.4 31,49.6V28.2L54,20Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M42,32H53V66H75V77H42Z" />
+    <path
+        android:fillColor="#67E8F9"
+        android:pathData="M57,32H68L53,54V41Z" />
+    <path
+        android:fillAlpha="0.4"
+        android:fillColor="#99F6E4"
+        android:pathData="M31,28.2L54,20L77,28.2V36L54,27.8L31,36Z" />
+</vector>

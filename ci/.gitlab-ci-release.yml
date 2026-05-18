@@ -1,0 +1,345 @@
+include:
+  - component: $CI_SERVER_HOST/proton/devops/cicd-components/tools/artifactlift/s3-upload@~latest
+    inputs:
+      destination-cluster: prod
+      destination-repository: vpn-releases
+      destination-directory: android/
+      artifact-list: "ProtonVPN.apk"
+
+make release branch:
+  before_script:
+    - git fetch origin development
+    - if [[ -f /load-env.sh ]]; then source /load-env.sh; fi
+  stage: deploy
+  when: manual
+  tags:
+    - shared-medium
+  only:
+    - development
+    - /^hotfix/
+  except:
+    - schedules
+  needs: []
+  script:
+    - |
+      if [ -z "$RELEASE_NOTES" ]; then
+          echo "Variable: RELEASE_NOTES manual var is required to continue"
+          exit 1;
+      else
+          echo "Updated env for $RELEASE_NOTES"
+      fi
+    - git config user.email "$GIT_CI_EMAIL"
+    - git config user.name "$GIT_CI_USERNAME"
+    # Compute version code and name
+    - export VERSION_NAME=$(./gradlew -q getVersionName | tail -n 1)
+    - export VERSION_CODE=$(./gradlew -q getVersionCode | tail -n 1)
+    # Make new release branch and add guestholes
+    - git checkout -b release/${VERSION_NAME}
+    - python3 app/prepare_gh.py
+    - git add app/src/main/assets/GuestHoleServers.json
+    - git commit -m "Update guesthole servers"
+    # Add f-droid metadata
+    - echo -e "What's new\n${RELEASE_NOTES}" > metadata/en-US/changelogs/${VERSION_CODE}.txt
+    - echo -e "versionName=${VERSION_NAME}\nversionCode=${VERSION_CODE}" > metadata/version_fdroid.txt
+    - git add -- ./metadata
+    - git commit -m "Add fdroid metadata"
+    # Add remote with oauth and push new branch
+    - git remote add self_origin "$OAUTH_SELF_URL"
+    - git tag -a ${VERSION_NAME} -m "${VERSION_NAME} release"
+    - git push self_origin ${VERSION_NAME}
+    - git push self_origin release/${VERSION_NAME}
+
+## Rules are shared between build and corresponding sign job
+## If the job can be triggered manually, allow_failure=true must be added to the build job
+.amazon_build_rules: &amazon_build_rules
+  - if: $CI_PIPELINE_SOURCE == "schedule"
+    when: never
+  - if: $CI_COMMIT_BRANCH =~ /^release/
+  - if: $CI_COMMIT_REF_PROTECTED == "true"
+    when: manual
+
+.vanilla_build_rules: &vanilla_build_rules
+  - if: $CI_PIPELINE_SOURCE == "schedule"
+    when: never
+  - if: $CI_COMMIT_BRANCH =~ /^release/
+
+.bundle_build_rules: &bundle_build_rules
+  - if: $CI_PIPELINE_SOURCE == "schedule"
+    when: never
+  - if: $CI_COMMIT_BRANCH == "development"
+  - if: $CI_COMMIT_BRANCH =~ /^release/
+  - if: $CI_COMMIT_BRANCH =~ /^hotfix/
+
+.payments_black_build_rules: &payments_black_build_rules
+  - if: $CI_PIPELINE_SOURCE == "schedule"
+    when: never
+  - if: $CI_COMMIT_REF_PROTECTED == "true"
+    when: manual
+
+## Only place build jobs  in gitlab-ci-release.yml file if artifacts needs to be signed with release key.
+## For all other debug/release jobs, use different .yml
+
+build amazon release:
+  stage: build
+  rules: *amazon_build_rules
+  allow_failure: true
+  tags:
+    - android-xlarge
+  script:
+    - >
+      ./gradlew assembleProductionVanillaAmazonRelease
+  artifacts:
+    expire_in: 3 week
+    paths:
+      - app/build/outputs/apk
+
+build google play bundle:
+  stage: build
+  rules: *bundle_build_rules
+  tags:
+    - android-xlarge
+  script:
+    - ./gradlew :app:bundleProductionGooglePlayStoreRelease
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - app/build/outputs/
+
+build vanilla release:
+  stage: build
+  rules: *vanilla_build_rules
+  tags:
+    - android-xlarge
+  script:
+    - ./gradlew assembleProductionVanillaDirectRelease
+  artifacts:
+    expire_in: 3 week
+    paths:
+      - app/build/outputs/apk
+
+build payments black google dev:
+  stage: build
+  rules: *payments_black_build_rules
+  allow_failure: true
+  tags:
+    - android-xlarge
+  script:
+    - export BLACK_TOKEN="$(curl --silent $BLACK_TOKEN_URL)"
+    - echo "API host ${TEST_ENV_DOMAIN}"
+    - echo "API token ${BLACK_TOKEN}"
+    - |
+      if [[ "$BLACK_TOKEN" == *$'\n'* || "$BLACK_TOKEN" == *" "* ]]; then
+        echo "Invalid token: ${BLACK_TOKEN}"
+        exit 1
+      fi
+    - >
+      ./gradlew assembleBlackGoogleDevRelease \
+                bundleBlackGoogleDevRelease
+  variables:
+    TEST_ENV_DOMAIN: "payments.proton.black"
+  after_script:
+    # Avoid build files clashing with the test ones.
+    - mkdir paymentsBlack
+    - mv app/build/outputs/apk/* paymentsBlack
+    - mv app/build/outputs/bundle/* paymentsBlack
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - paymentsBlack
+
+.sign_base:
+  extends: .artifact-signing
+  stage: deploy
+  variables:
+    ARTIFACT_SIGNATURE_KIND: android-app
+    ARTIFACT_SIGNATURE_PROFILE: android
+    ARTIFACT_SIGNATURE_REF_TYPE: protected-branch
+    ARTIFACT_SIGNATURE_DEST: signedArtifacts/
+
+sign google bundle:
+  extends: .sign_base
+  rules: *bundle_build_rules
+  needs: ["build google play bundle", "export archive name"]
+  variables:
+    ARTIFACT_SIGNATURE_KIND: android-app-bundle
+    ARTIFACT_SIGNATURE_FILES: app/build/outputs/bundle/productionGooglePlayStoreRelease/${ARCHIVES_BASE_NAME}-production-google-playStore-release.aab
+
+sign payments-black bundle:
+  extends: .sign_base
+  rules: *payments_black_build_rules
+  needs: ["build payments black google dev", "export archive name"]
+  variables:
+    ARTIFACT_SIGNATURE_KIND: android-app-bundle
+    ARTIFACT_SIGNATURE_FILES: paymentsBlack/blackGoogleDevRelease/${ARCHIVES_BASE_NAME}-black-google-dev-release.aab
+
+sign amazon:
+  extends: .sign_base
+  rules: *amazon_build_rules
+  needs: ["build amazon release", "export archive name"]
+  variables:
+    ARTIFACT_SIGNATURE_KIND: android-package-kit
+    ARTIFACT_SIGNATURE_FILES: app/build/outputs/apk/productionVanillaAmazon/release/${ARCHIVES_BASE_NAME}-production-vanilla-amazon-release.apk
+
+sign vanilla apk:
+  extends: .sign_base
+  rules: *vanilla_build_rules
+  needs: ["build vanilla release", "export archive name"]
+  variables:
+    ARTIFACT_SIGNATURE_KIND: android-package-kit
+    ARTIFACT_SIGNATURE_FILES: app/build/outputs/apk/productionVanillaDirect/release/${ARCHIVES_BASE_NAME}-production-vanilla-direct-release.apk
+
+sync-app:
+  cache: {}
+  stage: mirror
+  only:
+    - /^release/
+  except:
+    - schedules
+  variables:
+    OAUTH_URL: "https://oauth2:${GITHUB_CLI_TOKEN}@github.com/ProtonVPN/android-app.git"
+  script:
+    - apt update && apt-get install -y connect-proxy
+    - git remote add public $OAUTH_URL
+    # Checkout the branch before the lfs commands for REF_NAME to be recognized as a local name.
+    - git checkout $CI_COMMIT_REF_NAME
+    - |
+      if grep -q "filter=lfs" .gitattributes 2>/dev/null; then
+        echo "Git LFS detected. Handling LFS objects..."
+        git lfs fetch --all origin $CI_COMMIT_REF_NAME
+        git lfs push --all public $CI_COMMIT_REF_NAME
+      else
+        echo "Git LFS not detected. Skipping LFS steps."
+      fi
+    # Remove files places in .publishignore locally and from history before pushing
+    - publish-repo-cleanup
+    # Push current branch to github
+    - git push public $CI_COMMIT_REF_NAME
+    # Push the latest tag we can find
+    - git push public "$(git describe --abbrev=0)"
+    # Point github master to latest release branch
+    - git checkout -b master
+    - git push public master -f
+
+development-mirror:
+  stage: mirror
+  tags:
+    - shared-small
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "development"
+  needs: []
+  script:
+    - echo "Mirror current branch to development_mirror for docker pipelines testing"
+    - git checkout -b development_mirror
+    - git remote add self_origin "$OAUTH_SELF_URL"
+    - git push self_origin development_mirror -f
+
+publish-apk-internal:
+  stage: publish
+  tags:
+    - android-xlarge
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "development"
+  needs:
+    - job: sign google bundle
+    # Make sure tests pass before publishing. The dependency is on coverage report to avoid listing
+    # all test jobs here.
+    - job: coverage report
+      artifacts: false
+  script:
+    - ./gradlew generateReleaseNotesForPublishing
+    - ./gradlew publishProductionGooglePlayStoreBundle --artifact-dir signedArtifacts/
+    - ./gradlew notifyPublishOnSlack
+
+publish-github:
+  stage: publish
+  dependencies: ["sign vanilla apk", "export archive name", "sync-app"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_COMMIT_BRANCH =~ /^release/
+  variables:
+    RELEASE_NOTES: "metadata/en-US/changelogs/${VERSION_CODE}.txt"
+    GH_TOKEN: "${GITHUB_CLI_TOKEN}"
+    OAUTH_URL: "https://oauth2:${GH_TOKEN}@github.com/ProtonVPN/android-app.git"
+    ARTIFACT_PATH: "signedArtifacts/${ARCHIVES_BASE_NAME}-production-vanilla-direct-release.apk"
+    ARTIFACT_DISPLAY_NAME: "ProtonVPN-${VERSION_NAME}.apk"
+  script:
+    # Verify that uploaded artifact is signed with prod key
+    - ./verify_apk_signature.sh "${ARTIFACT_PATH}"
+    - gh release delete $VERSION_NAME -y || true
+    - gh release create $VERSION_NAME "$ARTIFACT_PATH#$ARTIFACT_DISPLAY_NAME" --title $VERSION_NAME --notes-file "$RELEASE_NOTES" --repo "${OAUTH_URL}"
+
+# DEVOPS-2680: Push to S3 instead of download repo
+artifactlift-s3-upload-prod:
+  stage: publish
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_COMMIT_BRANCH =~ /^release/
+  dependencies: ["sign vanilla apk", "export archive name"]
+  interruptible: false
+  before_script:
+    - export DIRNAME="$( date -I )"
+    - mkdir "${DIRNAME}" && cd "${DIRNAME}"
+    - mv "../${ARTIFACT_PATH}" "${ARTIFACT_OUTPUT_NAME}"
+  variables:
+    ARTIFACT_PATH: "signedArtifacts/${ARCHIVES_BASE_NAME}-production-vanilla-direct-release.apk"
+    ARTIFACT_OUTPUT_NAME: "ProtonVPN.apk"
+
+publish nexus debug:
+  stage: publish
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "development"
+  tags:
+    - shared-medium
+  image: $PROTON_CI_REGISTRY/tpe/test-scripts@0.0.37
+  allow_failure: true
+  needs: ["build google debug"]
+  variables:
+    NEXUS_GROUP: "${NEXUS_BASE_GROUP}/Versioned/Debug"
+  before_script: []
+  script:
+    - /usr/local/bin/nexus/upload_to_nexus.py
+      --path "app/build/outputs/apk/productionGooglePlayStore/debug/ProtonVPN-*-production-google-playStore-debug.apk"
+      --repository $NEXUS_REPO
+      --group ${NEXUS_GROUP}
+
+publish nexus latest:
+  stage: publish
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_COMMIT_BRANCH =~ /^release/
+    - when: manual
+  tags:
+    - shared-medium
+  image: $CI_REGISTRY/tpe/test-scripts
+  allow_failure: true
+  dependencies:
+    - build google play dev (monitoring release)
+  variables:
+    NEXUS_GROUP: "${NEXUS_BASE_GROUP}/SLI/Latest/Stable"
+  before_script: []
+  script:
+    # Delete old assets
+    - /usr/local/bin/nexus/delete_asset_on_nexus.py
+      --repository $NEXUS_REPO
+      --group $NEXUS_GROUP
+    # Upload release build
+    - /usr/local/bin/nexus/upload_to_nexus.py
+      --path "app/build/outputs/apk/productionGoogleDev/release/ProtonVPN-*-production-google-dev-release.apk"
+      --repository $NEXUS_REPO
+      --group $NEXUS_GROUP
+      --filename "vpn-latest-stable-release.apk"
+    # Upload release test build
+    - /usr/local/bin/nexus/upload_to_nexus.py
+      --path "release_tests/build/outputs/apk/release/release_tests-release.apk"
+      --repository $NEXUS_REPO
+      --group $NEXUS_GROUP
+      --filename "vpn-latest-stable-release-test.apk"
