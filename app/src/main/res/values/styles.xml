@@ -202,6 +202,7 @@
     <style name="ProtonTheme.Splash.Vpn.DarkPreferred">
         <!-- baltic_sea corresponds to shade_0 in dark mode -->
         <item name="windowSplashScreenBackground">@color/baltic_sea</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
         <item name="postSplashScreenTheme">@style/ProtonTheme.Vpn.Mobile</item>
     </style>
 
