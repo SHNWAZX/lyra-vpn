@@ -26,7 +26,17 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -34,11 +44,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
@@ -129,7 +146,7 @@ class MainActivity : VpnUiDelegateProvider, AppCompatActivity() {
     private val helper = object : MainActivityHelper(this) {
 
         override suspend fun onLoginNeeded() {
-            accountViewModel.addAccount()
+            ProtonLogger.log(UiConnect, "Lyra first-run screen shown without Proton login")
         }
 
         override suspend fun onReady() {
@@ -200,7 +217,7 @@ class MainActivity : VpnUiDelegateProvider, AppCompatActivity() {
                 val isMinimalStateReady by activityViewModel.isMinimalStateReadyFlow.collectAsStateWithLifecycle()
                 when (val state = accountState) {
                     AccountViewModel.State.Initial,
-                    AccountViewModel.State.LoginNeeded -> {}
+                    AccountViewModel.State.LoginNeeded -> LyraFirstRunScreen()
                     AccountViewModel.State.Processing,
                     AccountViewModel.State.StepNeeded ->
                         ProtonCenteredProgress(Modifier.fillMaxSize())
@@ -367,6 +384,73 @@ class CoreNavigation(
     val onSignIn: () -> Unit,
     val onSignOut: () -> Unit
 )
+
+@Composable
+private fun LyraFirstRunScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    listOf(
+                        Color(0xFF083D3C),
+                        Color(0xFF10151F),
+                        Color(0xFF111827),
+                    )
+                )
+            )
+            .padding(horizontal = 32.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(82.dp)
+                    .background(
+                        Brush.linearGradient(
+                            listOf(Color(0xFF38F5D5), Color(0xFF6A5CFF))
+                        ),
+                        RoundedCornerShape(24.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "L",
+                    color = Color.White,
+                    fontSize = 44.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = "Lyra VPN",
+                color = Color.White,
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "No Proton login required",
+                color = Color(0xFF8AF3E3),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "This Lyra build stays out of Proton account flows. Add your own VPN backend to enable live connections.",
+                color = Color(0xFFC9D6E2),
+                fontSize = 15.sp,
+                lineHeight = 22.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
 
 @Composable
 private fun SignOutDialog(hide: () -> Unit, signOut: (notShowAgain: Boolean) -> Unit) {
